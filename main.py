@@ -9,7 +9,7 @@ def main():
 
     while True:
         print("\nMenu:")
-        print("1. Print All Transactions")
+        print("1. Print Transactions")
         print("2. Print Total Spending")
         print("3. Add a New Transaction")
         print("4. Update Transaction")
@@ -19,16 +19,36 @@ def main():
         print all transactions by category(groceries, date, type)
         
         '''
-        print("0. Exit\n")
+        print("\n0. Exit\n")
         print('Enter a Number: ', end='')
 
         value = int(input())
 
         match value:
             case 1:
-                spendwise.print_all_transactions()
+                while True:
+                    print("\nChoose Print Option:")
+                    print("1. Print All Transactions")
+                    print("2. Print Filtered By Price Transactions")
+                    print("3. Print Custom Filtered Transactions")
+
+                    print("\n0. Go Back\n")
+                    print('Enter a Number: ', end='')
+                    option = input()
+
+                    match option:
+                        case 1:
+                            # Case 1 - Print All Transactions
+                            output = spendwise.get_all_transactions()
+                            if not output:
+                                print('\n\n-------------------------')
+                                print("There Are No Transactions")
+                                print('-------------------------\n')
+                            else:
+                                print(output)
             case 2:
-                spendwise.print_total_spending()
+                total_price = spendwise.print_total_spending()
+                print(total_price)
             case 3:
                 print("\nEnter Transaction Description: ", end="")
                 description = input()
