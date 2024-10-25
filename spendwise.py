@@ -19,7 +19,7 @@ class SpendWise:
         >>> self.add_transaction('Spotify Payment', '2024-10-02', 4.99, 'Subscription')
         Transaction Added Successfully
         """
-        self.cursor.execute("INSERT INTO Spending (date, description, price, type) VALUES (?, ?, ?, ?)", (date, description, price, transaction_type))
+        self.cursor.execute("INSERT INTO Spending (date, description, price, category) VALUES (?, ?, ?, ?)", (date, description, price, transaction_type))
 
         try:
             self.db.commit()
@@ -138,7 +138,7 @@ class SpendWise:
         Spotify Payment —  id: 1;  date: 2024-10-02;  description: Spotify Payment;  price: 4.99;  category: Subscription.
         """
         formatted_results = [
-            f"{row[2]} —  {self.columns[0]}: {row[0]};  {self.columns[1]}: {row[1]};  {self.columns[2]}: {row[2]};  {self.columns[3]}: {row[3]};  {self.columns[4]}: {row[4]}."
+            f"{row[2].capitalize()} —  {self.columns[0]}: {row[0]};  {self.columns[1]}: {row[1]};  {self.columns[2]}: {row[2]};  {self.columns[3]}: {row[3]};  {self.columns[4]}: {row[4]}."
             for row in transactions
         ]
         output = "\n".join(formatted_results)

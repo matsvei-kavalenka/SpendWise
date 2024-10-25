@@ -1,4 +1,5 @@
 import sqlite3
+import re
 from spendwise import SpendWise
 
 
@@ -24,13 +25,13 @@ def main():
                 print("\nEnter Transaction Description: ", end="")
                 description = input()
 
-                print("Enter Transaction Date: ", end="")
+                print("Enter Transaction Date (yyyy-mm-dd): ", end="")
                 date = input()
 
                 print("Enter Transaction Price: ", end="")
                 price = float(input())
 
-                print("Enter Transaction Type: ", end="")
+                print("Enter Transaction Category: ", end="")
                 trans_type = input()
                 spendwise.add_transaction(description, date, price, trans_type)
             case 2:
@@ -54,7 +55,10 @@ def main():
                             break
                         case 2:
                             # 2 - Print Custom Sorted Transactions
-                            print("\nWrite Category To Order By: ", end="")
+                            print("\nWrite Category To Order By ")
+                            for column in spendwise.columns:
+                                print('-', column)
+                            print(':', end='')
                             category = input()
 
                             print("\nWrite Ascending Or Descending Order(ASC or DESC): ", end="")
@@ -84,19 +88,26 @@ def main():
                     if spendwise.check_transaction_in_db(trans_id):
                         print("\nEnter Parameters From List And Data To Change:\n", end="")
 
-                        for column in spendwise.columns:
+                        for column in spendwise.columns[1:]:
                             print('-', column)
 
-                        print("(Ex. price = 3.00, description = 'Candies'):", end=" ")
+                        print("(Ex. price = '3.00', description = 'Candies'):", end=" ")
                         trans_data = input()
 
-                        spendwise.update_transaction(trans_id, trans_data)
+                        parsed_data = re.sub(r"price = '([\d.]+)'", r"price = \1", trans_data)
+
+                        spendwise.update_transaction(trans_id, parsed_data)
                     else:
                         spendwise.print_output('ERROR: There Is No Transaction With Such ID In Database')
             case 5:
-                print("\nEnter ID of Transaction To Delete: ", end="")
-                trans_id = int(input())
-                spendwise.delete_transaction(trans_id)
+                output = spendwise.get_all_transactions()
+                if not output:
+                    spendwise.print_output('There Are No Transactions')
+                else:
+                    spendwise.print_output(str(output))
+                    print("\nEnter ID of Transaction To Delete: ", end="")
+                    trans_id = int(input())
+                    spendwise.delete_transaction(trans_id)
             case 0:
                 break
             case _:
