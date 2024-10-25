@@ -37,7 +37,7 @@ def main():
                 while True:
                     print("\nChoose Print Option:")
                     print("1. Print All Transactions")
-                    print("2. Print Ordering  By Transactions")
+                    print("2. Print Ordering By Transactions")
 
                     print("\n0. Go Back\n")
                     print('Enter a Number: ', end='')
@@ -69,14 +69,30 @@ def main():
                             print('Invalid Input. Try again.')
             case 3:
                 total_price = spendwise.get_total_spending()
-                print(total_price)
+                total_price_str = f"TOTAL PRICE: {total_price}"
 
+                spendwise.print_output(total_price_str)
             case 4:
-                print("\nEnter ID of Transaction To Update: ", end="")
-                trans_id = int(input())
-                print("\nEnter Data To Change(ex. price = 3.00, description = 'Candies': ", end="")
-                trans_data = input()
-                spendwise.update_transaction(trans_id, trans_data)
+                output = spendwise.get_all_transactions()
+                if not output:
+                    spendwise.print_output('There Are No Transactions')
+                else:
+                    spendwise.print_output(str(output))
+
+                    print("\nEnter ID of Transaction To Update: ", end="")
+                    trans_id = int(input())
+                    if spendwise.check_transaction_in_db(trans_id):
+                        print("\nEnter Parameters From List And Data To Change:\n", end="")
+
+                        for column in spendwise.columns:
+                            print('-', column)
+
+                        print("(Ex. price = 3.00, description = 'Candies'):", end=" ")
+                        trans_data = input()
+
+                        spendwise.update_transaction(trans_id, trans_data)
+                    else:
+                        spendwise.print_output('ERROR: There Is No Transaction With Such ID In Database')
             case 5:
                 print("\nEnter ID of Transaction To Delete: ", end="")
                 trans_id = int(input())
