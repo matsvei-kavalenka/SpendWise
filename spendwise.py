@@ -7,7 +7,7 @@ class SpendWise:
         self.db = db
         self.columns = ['id', 'date', 'description', 'price', 'category']
 
-    def add_transaction(self, description, date, price, transaction_type) -> None:
+    def add_transaction(self, description: str, date: str, price: float, transaction_type: str) -> None:
         """
         A function that adds a new transaction to the database.
 
@@ -144,7 +144,16 @@ class SpendWise:
         output = "\n".join(formatted_results)
         return output
 
-    def check_transaction_in_db(self, transaction_id: int) -> bool:
+    def is_transaction_in_db(self, transaction_id: int) -> bool:
+        """
+                A functions that checks if a transaction exists in the database.
+
+                :param transaction_id: int
+                :returns: True if the transaction exists, False otherwise.
+                :example:
+                >>> self.is_transaction_in_db(1)
+                True
+                """
         self.cursor.execute(f"SELECT * FROM Spending WHERE id = {transaction_id}")
 
         return True if self.cursor.fetchone() else False

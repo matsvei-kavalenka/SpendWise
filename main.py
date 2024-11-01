@@ -72,11 +72,12 @@ def main():
                         case _:
                             print('Invalid Input. Try again.')
             case 3:
+                # 3 - Print Total Spending
                 total_price = spendwise.get_total_spending()
-                total_price_str = f"TOTAL PRICE: {total_price}"
 
-                spendwise.print_output(total_price_str)
+                spendwise.print_output(f"TOTAL PRICE: {total_price}")
             case 4:
+                # 4 - Update Transaction
                 output = spendwise.get_all_transactions()
                 if not output:
                     spendwise.print_output('There Are No Transactions')
@@ -85,7 +86,7 @@ def main():
 
                     print("\nEnter ID of Transaction To Update: ", end="")
                     trans_id = int(input())
-                    if spendwise.check_transaction_in_db(trans_id):
+                    if spendwise.is_transaction_in_db(trans_id):
                         print("\nEnter Parameters From List And Data To Change:\n", end="")
 
                         for column in spendwise.columns[1:]:
@@ -100,6 +101,7 @@ def main():
                     else:
                         spendwise.print_output('ERROR: There Is No Transaction With Such ID In Database')
             case 5:
+                # 4 - Delete Transaction
                 output = spendwise.get_all_transactions()
                 if not output:
                     spendwise.print_output('There Are No Transactions')
